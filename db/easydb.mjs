@@ -1,4 +1,4 @@
-import pages from "../db/pages.json" with { type: 'json' };
+import pages from "./pages.json" with { type: 'json' };
 import fs from "node:fs";
 
 export default class EasyDB {
