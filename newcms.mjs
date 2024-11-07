@@ -35,8 +35,6 @@ for (const page of DB.pages) {
                   page.content.type
                 }/index.svelte';
 
-                console.log({rootComponent})
-
                 mount(layout, { target: document.getElementById('app'), props: {
                     page: ${JSON.stringify(page)},
                     rootComponent
