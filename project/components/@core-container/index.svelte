@@ -1,5 +1,1 @@
-<script lang="ts">
-    import tp from './props'
-
-    console.log({tp})
-</script>
+<h1>This is a container and it will need to render all the children</h1>
