@@ -29,12 +29,18 @@ for (const page of DB.pages) {
         <body>
             <div id="app"></div>
             <script type="module">
-                import {mount} from 'svelte';
+                import { mount } from 'svelte';
                 import layout from '/project/layouts/${page.layout}.svelte';
+                import rootComponent from '/project/components/${
+                  page.content.type
+                }/index.svelte';
 
-                mount(layout, { target: document.getElementById('app'), props: ${JSON.stringify(
-                  page.content.props
-                )} });
+                console.log({rootComponent})
+
+                mount(layout, { target: document.getElementById('app'), props: {
+                    page: ${JSON.stringify(page)},
+                    rootComponent
+                } });
             </script>
         </body>
         </html>
