@@ -1,0 +1,104 @@
+[
+  {
+    "title": "Home",
+    "path": "/",
+    "content": {
+      "type": "@core-container",
+      "props": {
+        "children": [
+          {
+            "type": "@core-nav",
+            "props": {
+              "items": [
+                {
+                  "title": "Home",
+                  "href": "/"
+                },
+                {
+                  "title": "About",
+                  "href": "/about"
+                },
+                {
+                  "title": "Contact",
+                  "href": "/contact"
+                }
+              ]
+            }
+          },
+          {
+            "type": "@core-hero",
+            "props": {
+              "text": "This text came from the database"
+            }
+          },
+          {
+            "type": "byDeveloper-sample-component",
+            "props": {
+              "text": "this is a sample component"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "title": "About",
+    "path": "/about",
+    "content": {
+      "type": "@core-container",
+      "props": {
+        "children": [
+          {
+            "type": "@core-nav",
+            "props": {
+              "items": [
+                {
+                  "title": "Home",
+                  "href": "/"
+                },
+                {
+                  "title": "About",
+                  "href": "/about"
+                },
+                {
+                  "title": "Contact",
+                  "href": "/contact"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "title": "Contact",
+    "path": "/contact",
+    "content": {
+      "type": "@core-container",
+      "props": {
+        "children": [
+          {
+            "type": "@core-nav",
+            "props": {
+              "items": [
+                {
+                  "title": "Home",
+                  "href": "/"
+                },
+                {
+                  "title": "About",
+                  "href": "/about"
+                },
+                {
+                  "title": "Contact",
+                  "href": "/contact"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+]
