@@ -1,7 +1,9 @@
 [
   {
+    "id": 1,
     "title": "Home",
     "path": "/",
+    "layout": "@core-default",
     "content": {
       "type": "@core-container",
       "props": {
@@ -42,8 +44,10 @@
     }
   },
   {
+    "id": 2,
     "title": "About",
     "path": "/about",
+    "layout": "@core-default",
     "content": {
       "type": "@core-container",
       "props": {
@@ -72,8 +76,10 @@
     }
   },
   {
+    "id": 3,
     "title": "Contact",
     "path": "/contact",
+    "layout": "@core-default",
     "content": {
       "type": "@core-container",
       "props": {
