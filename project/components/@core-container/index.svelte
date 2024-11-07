@@ -1,3 +1,5 @@
 <script lang="ts">
-    console.log('WORKING')
+    import tp from './props'
+
+    console.log({tp})
 </script>

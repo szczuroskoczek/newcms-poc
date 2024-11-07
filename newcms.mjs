@@ -1,8 +1,8 @@
 import express from "express";
-import EasyDB from "./util/easydb.mjs";
+import EasyDB from "./db/easydb.mjs";
 import fs, { globSync } from "node:fs";
 import * as vite from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 const DB = new EasyDB();
 
@@ -12,11 +12,11 @@ const app = express();
 const adminRouter = express.Router();
 app.use("/admin", adminRouter);
 
-for (const page of DB.pages) {
-  if (!fs.existsSync("./project/pages")) {
-    fs.mkdirSync("./project/pages");
-  }
+if (!fs.existsSync("./project/pages")) {
+  fs.mkdirSync("./project/pages");
+}
 
+for (const page of DB.pages) {
   fs.writeFileSync(
     `./project/pages/${page.id}.html`,
     `
@@ -51,23 +51,29 @@ for (const page of DB.pages) {
 await vite.build({
   root: "./",
   build: {
-    outDir: "./project/dist",
+    outDir: "./build",
     rollupOptions: {
-      input: globSync("./project/pages/*.html"),
+      input: globSync("./project/**/*.*"),
+      preserveEntrySignatures: "strict",
+      output: {
+        dir: "./build",
+        preserveModules: true,
+        preserveModulesRoot: "project",
+      },
     },
   },
-  plugins: [svelte()],
+  plugins: [svelte({ preprocess: vitePreprocess() })],
 });
 
 for (const page of DB.pages) {
   app.get(page.path, (req, res) => {
-    res.sendFile(`project/dist/project/pages/${page.id}.html`, {
-      root: "./",
+    res.sendFile(`${page.id}.html`, {
+      root: "./build/project/pages",
     });
   });
 }
 
-app.use(express.static("./project/dist"));
+app.use(express.static("./build"));
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
