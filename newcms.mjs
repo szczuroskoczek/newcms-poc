@@ -12,41 +12,57 @@ const app = express();
 const adminRouter = express.Router();
 app.use("/admin", adminRouter);
 
-/**
- *
- * @param {DB['pages'][number]} page
- */
-const renderPage = (page) => {
-  const makeEntry = () => {
-    return `
-        <script type="module">
-            import rootComponent from "/project/components/${
-              page.content.type
-            }/entry.ts";
-
-            rootComponent(${JSON.stringify(page.content.props)});
-        </script>
-        `;
-  };
-
-  return vite.build({
-    build: {
-      outDir: `./project/dist/${page.id}`,
-      assetsDir: "./project/dist/assets",
-      emptyOutDir: false,
-      rollupOptions: {
-        input: fs
-          .readFileSync(`./project/layouts/${page.layout}/index.html`, "utf-8")
-          .replace(`#ENTRY#`, makeEntry()),
-        output: {
-          entryFileNames: "index.html",
-        },
-      },
-    },
-  });
-};
-
-// render all the pages first
 for (const page of DB.pages) {
-  renderPage(page);
+  if (!fs.existsSync("./project/pages")) {
+    fs.mkdirSync("./project/pages");
+  }
+
+  fs.writeFileSync(
+    `./project/pages/${page.id}.html`,
+    `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body>
+            <div id="app"></div>
+            <script type="module">
+                import {mount} from 'svelte';
+                import layout from '/project/layouts/${page.layout}.svelte';
+
+                mount(layout, { target: document.getElementById('app'), props: ${JSON.stringify(
+                  page.content.props
+                )} });
+            </script>
+        </body>
+        </html>
+    `
+  );
 }
+
+await vite.build({
+  root: "./",
+  build: {
+    outDir: "./project/dist",
+    rollupOptions: {
+      input: globSync("./project/pages/*.html"),
+    },
+  },
+  plugins: [svelte()],
+});
+
+for (const page of DB.pages) {
+  app.get(page.path, (req, res) => {
+    res.sendFile(`project/dist/project/pages/${page.id}.html`, {
+      root: "./",
+    });
+  });
+}
+
+app.use(express.static("./project/dist"));
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
